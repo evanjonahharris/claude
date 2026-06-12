@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { fetchAllLeads, writeLeadUpdate } from '@/lib/sheets';
 import { applyManualOutcome, nextAvailableOutreachN } from '@/lib/recalculate';
 import { nowTimestamp } from '@/lib/utils';
@@ -8,7 +9,7 @@ import { getOutcomeByCode } from '@/data/outreach_outcome_key';
 // Quo / OpenPhone integration — reads missed calls and voicemails from Quo API
 // Requires QUO_API_KEY environment variable and Quo inbox to be configured
 export async function POST() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const token = (session as { accessToken?: string })?.accessToken;
   if (!token) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 

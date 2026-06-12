@@ -18,8 +18,8 @@ export default function DashboardPage() {
   async function loadMetrics() {
     setLoading(true);
     const res = await fetch('/api/leads?filter=all&limit=2000');
-    const data = await res.json() as { leads: Lead[] };
-    setMetrics(computeMetrics(data.leads));
+    const data = await res.json() as { leads?: Lead[] };
+    setMetrics(computeMetrics(data.leads ?? []));
     setLastSync(new Date().toLocaleTimeString());
     setLoading(false);
   }

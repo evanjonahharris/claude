@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { fetchAllLeads, writeLeadUpdate } from '@/lib/sheets';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const token = (session as { accessToken?: string })?.accessToken;
   if (!token) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 
@@ -21,7 +22,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const token = (session as { accessToken?: string })?.accessToken;
   if (!token) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 

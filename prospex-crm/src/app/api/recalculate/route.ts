@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { fetchAllLeads, writeLeadUpdate } from '@/lib/sheets';
 import { recalculateBatch } from '@/lib/recalculate';
 import { format } from 'date-fns';
 
 export async function POST() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const token = (session as { accessToken?: string })?.accessToken;
   if (!token) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 
