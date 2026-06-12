@@ -23,9 +23,9 @@ export function NewContactsView() {
     try {
       const params = new URLSearchParams({ filter: 'new-contacts', page: String(p), limit: String(LIMIT), search: q });
       const res = await fetch(`/api/leads?${params}`);
-      const data = await res.json() as { leads: Lead[]; total: number };
-      setLeads(data.leads);
-      setTotal(data.total);
+      const data = await res.json() as { leads?: Lead[]; total?: number; error?: string };
+      setLeads(data.leads ?? []);
+      setTotal(data.total ?? 0);
     } finally {
       setLoading(false);
     }
